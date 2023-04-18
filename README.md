@@ -27,7 +27,6 @@
 * 6150: JDBC for Microsoft SQL Server
 * 6152: JDBC for Postgres
 * 6154: JDBC for MySQL
-* 3129: Punchcard Viz
 
 ## To Do
 
