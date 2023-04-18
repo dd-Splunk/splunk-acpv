@@ -31,4 +31,5 @@ jobs:
       - name: Release SPLv16
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: latest
           files: ${APP_NAME}.spl
