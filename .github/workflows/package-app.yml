@@ -71,4 +71,4 @@ jobs:
           # The URL of the Github API, only use this input if you are using Github Enterprise
           # Default: "https://api.github.com"
           # Use http(s)://[hostname]/api/v3 to access the API for GitHub Enterprise Server
-          github-api-url: ""
+          github-api-url: "https://api.github.com"
