@@ -1,0 +1,7 @@
+
+        <dashboard version="2" theme="dark" hiddenElements="{&quot;hideEdit&quot;:false,&quot;hideOpenInSearch&quot;:false,&quot;hideExport&quot;:false}">
+            <label>Punch</label>
+            <description>The long dashboard description</description>
+            <definition><![CDATA[{"dataSources":{"ds_search_1":{"type":"ds.search","options":{"query":"| inputlookup bikeshare.csv | stats count by MONTH WEEKDAY","queryParameters":{"earliest":"-24h@h","latest":"now"}}},"ds_Vz48qPy6":{"type":"ds.search","options":{"query":"| inputlookup bikeshare.csv | stats count by MONTH WEEKDAY"},"name":"bikes"}},"visualizations":{"viz_PCotAY3v":{"type":"splunk.punchcard","options":{"bubbleSizeMethod":"radius","bubbleColor":"> primary | seriesByName('count') | gradient(bubbleColorConfig)"},"dataSources":{"primary":"ds_Vz48qPy6"},"title":"Bikes rental over time","description":"A nice long description for this visualization"}},"inputs":{"input_global_trp":{"type":"input.timerange","options":{"token":"global_time","defaultValue":"-24h@h,now"},"title":"Global Time Range"}},"layout":{"type":"grid","options":{},"structure":[{"item":"viz_PCotAY3v","type":"block","position":{"x":0,"y":0,"w":1200,"h":400}}],"globalInputs":["input_global_trp"]},"title":"Punch","defaults":{"dataSources":{"ds.search":{"options":{"queryParameters":{"latest":"$global_time.latest$","earliest":"$global_time.earliest$"}}}}},"description":"The long dashboard description"}]]></definition>
+            <assets><![CDATA[{}]]></assets>
+        </dashboard>
