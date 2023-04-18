@@ -32,4 +32,4 @@
 
 * [ ] Fix Makefile dependencies
   * [ ] .env / env confusion between the two
-  * [ ] sql is never triggered
+  * [ ] sql is never triggered.
