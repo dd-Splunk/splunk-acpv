@@ -28,3 +28,7 @@ jobs:
           prerelease: false
           files: |
             *.spl
+      - name: Release SPLv16
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${APP_NAME}.spl
