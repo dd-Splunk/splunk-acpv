@@ -20,11 +20,21 @@ jobs:
           COPYFILE_DISABLE=1 tar -cvzf ${APP_NAME}.spl ${APP_NAME}
         env:
           APP_NAME: ${{ github.event.repository.name }}
-      - name: Release spl
-        uses: "marvinpinto/action-automatic-releases@latest"
+      # - name: Release spl
+      #   uses: "marvinpinto/action-automatic-releases@latest"
+      #   with:
+      #     repo_token: "${{ secrets.GITHUB_TOKEN }}"
+      #     automatic_release_tag: "latest"
+      #     prerelease: false
+      #     files: |
+      #       *.spl
+      - name: Release SPL
+        uses: svenstaro/upload-release-action@v2
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: false
-          files: |
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: |
             *.spl
+          asset_name: mything
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: "This is my release text"
