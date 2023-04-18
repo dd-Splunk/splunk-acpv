@@ -164,6 +164,7 @@ cython_debug/
 .env
 .vscode/
 # Splunk
+local.meta
 *.spl
 # Generated Data
 # csv/*.csv
