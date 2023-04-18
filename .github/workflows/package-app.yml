@@ -10,6 +10,8 @@ jobs:
   tagged-release:
     name: "Package App"
     runs-on: "ubuntu-latest"
+    env:
+      TAGS: "v1.0.0"
 
     steps:
       # ...
