@@ -1,0 +1,106 @@
+
+# Application-level permissions
+
+[]
+access = read : [ * ], write : [ admin, power ]
+
+### EVENT TYPES
+
+[eventtypes]
+export = system
+
+
+### PROPS
+
+[props]
+export = system
+
+
+### TRANSFORMS
+
+[transforms]
+export = system
+
+
+### LOOKUPS
+
+[lookups]
+export = system
+
+
+### VIEWSTATES: even normal users should be able to create shared viewstates
+
+[viewstates]
+access = read : [ * ], write : [ * ]
+export = system
+
+###
+[app/ui]
+version = 8.2.6
+modtime = 1656323507.856222000
+
+[app/launcher]
+version = 8.2.6
+modtime = 1656323507.858846000
+
+[lookups/dc.csv]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.2.5
+modtime = 1654157577.246399000
+
+[lookups/services.csv]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.2.5
+modtime = 1654157587.446831000
+
+[lookups/webmail.csv]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.2.5
+modtime = 1654157608.374273000
+
+[views/databases__queues]
+owner = admin
+version = 8.2.6
+modtime = 1656324290.078194000
+
+[lookups/dc-svc.csv]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.2.5
+modtime = 1654159421.806956000
+
+[views/mail_traffic]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 8.2.6
+modtime = 1656324311.413451000
+
+[lookups/send-receive.csv]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.2.5
+modtime = 1654168117.735229000
+
+[lookups/users.csv]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.2.5
+modtime = 1654168336.129465000
+
+[app/install/install_source_checksum]
+version = 8.2.6
+modtime = 1656322373.341642000
+
+[app/package/check_for_updates]
+version = 8.2.6
+modtime = 1656323507.860054000

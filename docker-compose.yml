@@ -1,0 +1,86 @@
+version: "3.6"
+
+services:
+  so1:
+    networks:
+      splunknet:
+    image: splunk/splunk:${SPLUNK_IMAGE:-latest}
+    container_name: so1
+    platform: linux/amd64
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      # - SPLUNK_APPS_URL=https://github.com/dd-Splunk/splunk-db/releases/download/latest/splunk-db.spl,https://splunkbase.splunk.com/app/2686/release/3.12.2/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download,https://splunkbase.splunk.com/app/6150/release/1.2.0/download,https://splunkbase.splunk.com/app/6152/release/1.2.0/download
+      - SPLUNK_APPS_URL=https://splunkbase.splunk.com/app/2686/release/3.12.2/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download,https://splunkbase.splunk.com/app/6150/release/1.2.0/download,https://splunkbase.splunk.com/app/6152/release/1.2.0/download
+      - SPLUNKBASE_USERNAME
+      - SPLUNKBASE_PASSWORD
+      - SPLUNK_PASSWORD
+      - JAVA_VERSION=openjdk:11
+      - TZ=${TZ}
+    ports:
+      - 8000:8000
+      - 8089:8089
+      - 9998:9998
+      - 9999:9999
+    volumes:
+      - so1-var:/opt/splunk/var
+      - so1-etc:/opt/splunk/etc
+    restart: always
+
+  db:
+    networks:
+      splunknet:
+    image: mysql:latest
+    restart: always
+    command: --tls_version=TLSv1.2 --local-infile=ON --secure-file-priv="${CSV_DIR}"
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: ${DB_USER}
+      # You can use whatever password you like
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      # Password for root access
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      TZ: ${TZ}
+    # ports:
+    #   - '3306:3306'
+    volumes:
+      - db-data:/var/lib/mysql
+      - ${MY_SQL_DIR}:/docker-entrypoint-initdb.d
+      - .${CSV_DIR}:${CSV_DIR}
+  pg:
+    networks:
+      splunknet:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    # ports:
+    #   - '5432:5432'
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      # copy the sql script to create tables
+      - ${PG_SQL_DIR}:/docker-entrypoint-initdb.d
+  adminer:
+    networks:
+      splunknet:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+networks:
+  splunknet:
+    driver: bridge
+    attachable: true
+
+volumes:
+  so1-var:
+  so1-etc:
+  db-data:
+  pg-data:
