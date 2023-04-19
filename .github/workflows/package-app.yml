@@ -39,12 +39,12 @@ jobs:
           APP_NAME: ${{ github.event.repository.name }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${APP_NAME}.spl
-          asset_name: ${APP_NAME}.spl
+          asset_path: ./splunk-acpv.spl
+          asset_name: splunk-acpv.spl
           asset_content_type: application/zip
 
       - name: Publish release
-        uses: StuYarrow/publish-release@v1.1.2
+        uses: eregon/publish-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
