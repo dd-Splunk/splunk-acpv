@@ -13,4 +13,4 @@ tar  -C app/ -xf ${APP_FILE} --strip 1
 rm -rf app/lookups/lookup_file_backups
 rm ${APP_FILE}
 echo "Done."
-#
+# -
