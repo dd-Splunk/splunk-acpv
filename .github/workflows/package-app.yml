@@ -44,7 +44,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Publish release
-        uses: eregon/publish-release@v1
+        uses: StuYarrow/publish-release@v1.1.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
