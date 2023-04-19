@@ -38,7 +38,7 @@ jobs:
           allowUpdates: true
           makeLatest: true
           tag: ${{github.ref}}
-          artifacts: "${APP_NAME}.spl"
+          artifacts: "splunk-acpv.spl"
           token: ${{ secrets.GITHUB_TOKEN }}
         env:
           APP_NAME: ${{ github.event.repository.name }}
