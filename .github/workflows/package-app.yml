@@ -38,10 +38,10 @@ jobs:
           allowUpdates: true
           makeLatest: true
           tag: ${{github.ref}}
-          artifacts: "splunk-acpv.spl"
+          artifacts: ${{env.APP_NAME}}
           token: ${{ secrets.GITHUB_TOKEN }}
         env:
-          APP_NAME: ${{ github.event.repository.name }}
+          APP_NAME: ${{ github.event.repository.name }}.spl
 
       # - name: Publish release
       #   uses: StuYarrow/publish-release@v1.1.2
