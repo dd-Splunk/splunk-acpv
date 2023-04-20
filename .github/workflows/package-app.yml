@@ -37,7 +37,7 @@ jobs:
         with:
           allowUpdates: true
           makeLatest: true
-          tag: ${{github.ref}}
+          tag: ${{github.run_id}}
           artifacts: ${{env.APP_NAME}}
           token: ${{ secrets.GITHUB_TOKEN }}
         env:
