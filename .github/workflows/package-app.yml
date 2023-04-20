@@ -21,31 +21,22 @@ jobs:
         env:
           APP_NAME: ${{ github.event.repository.name }}
         # ...
-      # - name: Create Draft Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: latest
-      #     release_name: Releases ${{ github.ref }}
-      #     draft: true
-      #     prerelease: false
-
-      - name: Upload Release
-        uses: ncipollo/release-action@v1.12.0
+      - name: Release spl
+        uses: "marvinpinto/action-automatic-releases@6273874b61ebc8c71f1a61b2d98e234cf389b303"
         with:
-          allowUpdates: true
-          makeLatest: true
-          tag: latest
-          artifacts: ${{env.APP_NAME}}
-          token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          APP_NAME: ${{ github.event.repository.name }}.spl
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          files: |
+            *.spl
 
-      # - name: Publish release
-      #   uses: StuYarrow/publish-release@v1.1.2
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Upload Release
+      #   uses: ncipollo/release-action@v1.12.0
       #   with:
-      #     id: ${{ steps.create_release.outputs.id }}
+      #     allowUpdates: true
+      #     makeLatest: true
+      #     tag: latest
+      #     artifacts: ${{env.APP_NAME}}
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #   env:
+      #     APP_NAME: ${{ github.event.repository.name }}.spl
