@@ -163,7 +163,7 @@ cython_debug/
 .DS_Store
 .env
 .vscode/
-# Splunk
+# Splunk.
 local.meta
 *.spl
 # Generated Data
