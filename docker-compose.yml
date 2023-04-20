@@ -10,7 +10,7 @@ services:
     environment:
       - SPLUNK_START_ARGS=--accept-license
       # - SPLUNK_APPS_URL=https://github.com/dd-Splunk/splunk-db/releases/download/latest/splunk-db.spl,https://splunkbase.splunk.com/app/2686/release/3.12.2/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download,https://splunkbase.splunk.com/app/6150/release/1.2.0/download,https://splunkbase.splunk.com/app/6152/release/1.2.0/download
-      - SPLUNK_APPS_URL=https://splunkbase.splunk.com/app/2686/release/3.12.2/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download,https://splunkbase.splunk.com/app/6150/release/1.2.0/download,https://splunkbase.splunk.com/app/6152/release/1.2.0/download
+      - SPLUNK_APPS_URL=https://github.com/dd-Splunk/splunk-acpv/releases/download/latest/splunk-acpv.spl,https://splunkbase.splunk.com/app/2686/release/3.12.2/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download,https://splunkbase.splunk.com/app/6150/release/1.2.0/download,https://splunkbase.splunk.com/app/6152/release/1.2.0/download
       - SPLUNKBASE_USERNAME
       - SPLUNKBASE_PASSWORD
       - SPLUNK_PASSWORD
