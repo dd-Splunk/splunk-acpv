@@ -3,7 +3,8 @@ version: "3.6"
 services:
   so1:
     networks:
-      splunknet:
+      cmdb1:
+      cmdb2:
     image: splunk/splunk:${SPLUNK_IMAGE:-latest}
     container_name: so1
     platform: linux/amd64
@@ -28,7 +29,7 @@ services:
 
   db:
     networks:
-      splunknet:
+      cmdb1:
     image: mysql:latest
     restart: always
     command: --tls_version=TLSv1.2 --local-infile=ON --secure-file-priv="${CSV_DIR}"
@@ -49,7 +50,7 @@ services:
       - .${CSV_DIR}:${CSV_DIR}
   pg:
     networks:
-      splunknet:
+      cmdb2:
     image: postgres:latest
     restart: always
     environment:
@@ -68,16 +69,16 @@ services:
       - ${PG_SQL_DIR}:/docker-entrypoint-initdb.d
   adminer:
     networks:
-      splunknet:
+      cmdb1:
+      cmdb2:
     image: adminer
     restart: always
     ports:
       - 8080:8080
 
 networks:
-  splunknet:
-    driver: bridge
-    attachable: true
+  cmdb1:
+  cmdb2:
 
 volumes:
   so1-var:
