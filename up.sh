@@ -1,4 +1,22 @@
 #!/bin/bash
+
+dbx_connection () {
+  HOST=$1
+  TYPE=$2
+  PORT=$3
+  curl -k -s -X POST  -u admin:$SPLUNK_PASSWORD \
+  https://$SPLUNK_HOST:8089/servicesNS/nobody/splunk_app_db_connect/db_connect/dbxproxy/connections \
+  -d "{\"name\":\"${DB_NAME}-${HOST}\", \"connection_type\":\"${TYPE}\",  \
+  \"host\":\"${HOST}\", \"database\":\"${DB_NAME}\", \"identity\":\"${DB_USER}\", \
+  \"port\":\"${PORT}\", \"timezone\":\"${TZ}\"}"
+  echo ""
+}
+
+mysql_connection () {
+  HOST=$1
+  dbx_connection $HOST mysql 3306
+}
+
 source .env
 # Bring up the environment
 docker compose up -d
@@ -27,19 +45,9 @@ curl -k -s -X POST  -u admin:$SPLUNK_PASSWORD  \
 https://$SPLUNK_HOST:8089/servicesNS/nobody/splunk_app_db_connect/db_connect/dbxproxy/identities \
 -d "{\"name\":\"$DB_USER\",\"username\":\"$DB_USER\",\"password\":\"$DB_PASSWORD\"}"
 echo ""
+
 # Create a MySQL connection
-HOST=db
-curl -k -s -X POST  -u admin:$SPLUNK_PASSWORD \
-https://$SPLUNK_HOST:8089/servicesNS/nobody/splunk_app_db_connect/db_connect/dbxproxy/connections \
--d "{\"name\":\"${DB_NAME}-${HOST}\", \"connection_type\":\"mysql\",  \
-\"host\":\"$HOST\", \"database\":\"$DB_NAME\", \"identity\":\"$DB_USER\", \
-\"port\":\"3306\", \"timezone\":\"$TZ\"}"
-echo ""
+mysql_connection db
+
 # Create another MySQL connection
-HOST=pg
-curl -k -s -X POST  -u admin:$SPLUNK_PASSWORD \
-https://$SPLUNK_HOST:8089/servicesNS/nobody/splunk_app_db_connect/db_connect/dbxproxy/connections \
--d "{\"name\":\"${DB_NAME}-${HOST}\", \"connection_type\":\"mysql\",  \
-\"host\":\"$HOST\", \"database\":\"$DB_NAME\", \"identity\":\"$DB_USER\", \
-\"port\":\"3306\", \"timezone\":\"$TZ\"}"
-echo ""
+mysql_connection pg
