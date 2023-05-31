@@ -23,7 +23,7 @@ docker compose up -d
 
 echo "Wait for Splunk availability"
 
-until [ $(docker inspect --format='{{.State.Health.Status}}' so1) = healthy ]
+until [ $(docker inspect --format='{{.State.Health.Status}}' sh1) = healthy ]
 do
   echo -n '.'
   sleep 10
