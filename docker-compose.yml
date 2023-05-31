@@ -27,7 +27,7 @@ services:
       - so1-etc:/opt/splunk/etc
     restart: always
 
-  db:
+  cmdb1:
     networks:
       cmdb1:
     image: mysql:latest
@@ -45,10 +45,10 @@ services:
     # ports:
     #   - '3306:3306'
     volumes:
-      - db-data:/var/lib/mysql
+      - cmdb1-data:/var/lib/mysql
       - ${MY_SQL_DIR}:/docker-entrypoint-initdb.d
       - .${CSV_DIR}:${CSV_DIR}
-  pg:
+  cmdb2:
     networks:
       cmdb2:
     image: mysql:latest
@@ -64,7 +64,7 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: yes
       TZ: ${TZ}
     volumes:
-      - pg-data:/var/lib/mysql
+      - cmdb2-data:/var/lib/mysql
       - ${MY_SQL_DIR}:/docker-entrypoint-initdb.d
       - .${CSV_DIR}:${CSV_DIR}
   adminer:
@@ -83,5 +83,5 @@ networks:
 volumes:
   so1-var:
   so1-etc:
-  db-data:
-  pg-data:
+  cmdb1-data:
+  cmdb2-data:

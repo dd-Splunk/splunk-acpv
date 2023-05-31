@@ -47,7 +47,7 @@ https://$SPLUNK_HOST:8089/servicesNS/nobody/splunk_app_db_connect/db_connect/dbx
 echo ""
 
 # Create a MySQL connection
-mysql_connection db
+mysql_connection cmdb1
 
 # Create another MySQL connection
-mysql_connection pg
+mysql_connection cmdb2
