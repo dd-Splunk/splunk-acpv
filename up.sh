@@ -35,11 +35,11 @@ https://$SPLUNK_HOST:8089/servicesNS/nobody/splunk_app_db_connect/db_connect/dbx
 \"host\":\"$HOST\", \"database\":\"$DB_NAME\", \"identity\":\"$DB_USER\", \
 \"port\":\"3306\", \"timezone\":\"$TZ\"}"
 echo ""
-# Create a Postgresql connection
+# Create another MySQL connection
 HOST=pg
 curl -k -s -X POST  -u admin:$SPLUNK_PASSWORD \
 https://$SPLUNK_HOST:8089/servicesNS/nobody/splunk_app_db_connect/db_connect/dbxproxy/connections \
--d "{\"name\":\"${DB_NAME}-${HOST}\", \"connection_type\":\"postgres\",  \
+-d "{\"name\":\"${DB_NAME}-${HOST}\", \"connection_type\":\"mysql\",  \
 \"host\":\"$HOST\", \"database\":\"$DB_NAME\", \"identity\":\"$DB_USER\", \
-\"port\":\"5432\", \"timezone\":\"$TZ\"}"
+\"port\":\"3306\", \"timezone\":\"$TZ\"}"
 echo ""

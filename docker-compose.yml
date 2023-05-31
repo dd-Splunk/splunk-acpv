@@ -11,7 +11,7 @@ services:
     environment:
       - SPLUNK_START_ARGS=--accept-license
       # - SPLUNK_APPS_URL=https://github.com/dd-Splunk/splunk-db/releases/download/latest/splunk-db.spl,https://splunkbase.splunk.com/app/2686/release/3.12.2/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download,https://splunkbase.splunk.com/app/6150/release/1.2.0/download,https://splunkbase.splunk.com/app/6152/release/1.2.0/download
-      - SPLUNK_APPS_URL=https://github.com/dd-Splunk/splunk-acpv/releases/download/latest/splunk-acpv.spl,https://splunkbase.splunk.com/app/2686/release/3.12.2/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download,https://splunkbase.splunk.com/app/6150/release/1.2.0/download,https://splunkbase.splunk.com/app/6152/release/1.2.0/download
+      - SPLUNK_APPS_URL=https://github.com/dd-Splunk/splunk-acpv/releases/download/latest/splunk-acpv.spl,https://splunkbase.splunk.com/app/2686/release/3.13.0/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download,https://splunkbase.splunk.com/app/6150/release/1.2.0/download,https://splunkbase.splunk.com/app/6152/release/1.2.0/download
       - SPLUNKBASE_USERNAME
       - SPLUNKBASE_PASSWORD
       - SPLUNK_PASSWORD
@@ -51,22 +51,22 @@ services:
   pg:
     networks:
       cmdb2:
-    image: postgres:latest
+    image: mysql:latest
     restart: always
+    command: --tls_version=TLSv1.2 --local-infile=ON --secure-file-priv="${CSV_DIR}"
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
-    # ports:
-    #   - '5432:5432'
+      MYSQL_DATABASE: ${DB_NAME}
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: ${DB_USER}
+      # You can use whatever password you like
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      # Password for root access
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      TZ: ${TZ}
     volumes:
-      - pg-data:/var/lib/postgresql/data
-      # copy the sql script to create tables
-      - ${PG_SQL_DIR}:/docker-entrypoint-initdb.d
+      - pg-data:/var/lib/mysql
+      - ${MY_SQL_DIR}:/docker-entrypoint-initdb.d
+      - .${CSV_DIR}:${CSV_DIR}
   adminer:
     networks:
       cmdb1:
