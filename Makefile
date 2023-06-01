@@ -2,13 +2,13 @@
 SHELL = bash
 
 .env:
-	echo "Create env from template"
+	echo ".env: Create env from template"
 
-	SPL_P=Splunk4Me DB_P=`openssl rand -base64 16` envsubst < tpl.env | op inject -f > .env
+	SPL_P=Splunk4Me DB_P=Password42 envsubst < tpl.env | op inject -f > .env
 
 env: .env
-	echo "Create env from template"
-	SPL_P=Splunk4Me DB_P=`openssl rand -base64 16` envsubst < tpl.env | op inject -f > .env
+	echo "env: Create env from template"
+	SPL_P=Splunk4Me DB_P=Password42 envsubst < tpl.env | op inject -f > .env
 
 csv: env
 	echo "Create csv with demo data"
@@ -20,7 +20,8 @@ sql: csv
 
 up: sql
 	echo "Powering up"
-	./up.sh
+	docker compose build
+	docker compose up -d
 
 down:
 	echo "Powering down"
