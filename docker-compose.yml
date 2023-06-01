@@ -10,9 +10,6 @@ services:
     platform: linux/amd64
     environment:
       - SPLUNK_START_ARGS=--accept-license
-      - SPLUNK_APPS_URL
-      - SPLUNKBASE_USERNAME
-      - SPLUNKBASE_PASSWORD
       - SPLUNK_SEARCH_HEAD_URL=sh1
       - SPLUNK_INDEXER_URL=idx1
       - SPLUNK_HEAVY_FORWARDER_URL=hf1,hf2
@@ -22,9 +19,6 @@ services:
       - TZ=${TZ}
     ports:
       - 8000:8000
-    volumes:
-      - so1-var:/opt/splunk/var
-      - so1-etc:/opt/splunk/etc
     restart: always
 
   idx1:
@@ -44,6 +38,10 @@ services:
       - SPLUNK_ROLE=splunk_indexer
       - SPLUNK_PASSWORD
       - TZ=${TZ}
+    volumes:
+      - idx1-var:/opt/splunk/var
+      - idx1-etc:/opt/splunk/etc
+    restart: always
 
   ds-sh:
     networks:
@@ -62,10 +60,10 @@ services:
       - TZ=${TZ}
     ports:
       - 8008:8000
+    restart: always
 
   ds-hf:
     networks:
-      splunknet:
       cmdb1:
       cmdb2:
     image: splunk/splunk:${SPLUNK_IMAGE:-latest}
@@ -82,9 +80,11 @@ services:
       - TZ=${TZ}
     ports:
       - 8009:8000
+    restart: always
 
   hf1:
     networks:
+      splunknet:
       cmdb1:
     image: splunk/splunk:${SPLUNK_IMAGE:-latest}
     container_name: hf1
@@ -102,6 +102,7 @@ services:
       - TZ=${TZ}
     ports:
       - 8001:8000
+    restart: always
 
   cmdb1:
     networks:
@@ -127,6 +128,7 @@ services:
 
   hf2:
     networks:
+      splunknet:
       cmdb2:
     image: splunk/splunk:${SPLUNK_IMAGE:-latest}
     container_name: hf2
@@ -144,6 +146,7 @@ services:
       - TZ=${TZ}
     ports:
       - 8002:8000
+    restart: always
 
   cmdb2:
     networks:
@@ -165,13 +168,21 @@ services:
       - ${MY_SQL_DIR}:/docker-entrypoint-initdb.d
       - .${CSV_DIR}:${CSV_DIR}
 
+  sidecar:
+    networks:
+      cmdb1:
+      cmdb2:
+    build: .
+    volumes:
+      - $PWD/hf.sh:/tmp/hf.sh
+
 networks:
   splunknet:
   cmdb1:
   cmdb2:
 
 volumes:
-  so1-var:
-  so1-etc:
+  idx1-var:
+  idx1-etc:
   cmdb1-data:
   cmdb2-data:
