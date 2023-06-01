@@ -10,16 +10,15 @@ services:
     platform: linux/amd64
     environment:
       - SPLUNK_START_ARGS=--accept-license
-      # - SPLUNK_APPS_URL=https://github.com/dd-Splunk/splunk-db/releases/download/latest/splunk-db.spl,https://splunkbase.splunk.com/app/2686/release/3.12.2/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download,https://splunkbase.splunk.com/app/6150/release/1.2.0/download,https://splunkbase.splunk.com/app/6152/release/1.2.0/download
       - SPLUNK_APPS_URL
       - SPLUNKBASE_USERNAME
       - SPLUNKBASE_PASSWORD
       - SPLUNK_SEARCH_HEAD_URL=sh1
       - SPLUNK_INDEXER_URL=idx1
       - SPLUNK_HEAVY_FORWARDER_URL=hf1,hf2
+      - SPLUNK_DEPLOYMENT_SERVER=ds-sh
       - SPLUNK_ROLE=splunk_search_head
       - SPLUNK_PASSWORD
-      - JAVA_VERSION=openjdk:11
       - TZ=${TZ}
     ports:
       - 8000:8000
@@ -43,13 +42,46 @@ services:
       - SPLUNK_INDEXER_URL=idx1
       - SPLUNK_HEAVY_FORWARDER_URL=hf1,hf2
       - SPLUNK_ROLE=splunk_indexer
-      - SPLUNK_APPS_URL
+      - SPLUNK_PASSWORD
+      - TZ=${TZ}
+
+  ds-sh:
+    networks:
+      splunknet:
+    image: splunk/splunk:${SPLUNK_IMAGE:-latest}
+    container_name: ds-sh
+    hostname: ds-sh
+    platform: linux/amd64
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_ROLE=splunk_deployment_server
+      - SPLUNK_APPS_URL=https://github.com/dd-Splunk/splunk-acpv/releases/download/latest/splunk-acpv.spl
       - SPLUNKBASE_USERNAME
       - SPLUNKBASE_PASSWORD
       - SPLUNK_PASSWORD
       - TZ=${TZ}
     ports:
-      - 8001:8000
+      - 8008:8000
+
+  ds-hf:
+    networks:
+      splunknet:
+      cmdb1:
+      cmdb2:
+    image: splunk/splunk:${SPLUNK_IMAGE:-latest}
+    container_name: ds-hf
+    hostname: ds-hf
+    platform: linux/amd64
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_ROLE=splunk_deployment_server
+      - SPLUNK_APPS_URL=https://splunkbase.splunk.com/app/2686/release/3.13.0/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download
+      - SPLUNKBASE_USERNAME
+      - SPLUNKBASE_PASSWORD
+      - SPLUNK_PASSWORD
+      - TZ=${TZ}
+    ports:
+      - 8009:8000
 
   hf1:
     networks:
@@ -60,18 +92,16 @@ services:
     platform: linux/amd64
     environment:
       - SPLUNK_START_ARGS=--accept-license
-      - SPLUNK_APPS_URL=${SPLUNK_HF_APPS}
       - SPLUNK_SEARCH_HEAD_URL=sh1
       - SPLUNK_INDEXER_URL=idx1
       - SPLUNK_HEAVY_FORWARDER_URL=hf1,hf2
+      - SPLUNK_DEPLOYMENT_SERVER=ds-hf
       - SPLUNK_ROLE=splunk_heavy_forwarder
-      - SPLUNKBASE_USERNAME
-      - SPLUNKBASE_PASSWORD
       - SPLUNK_PASSWORD
       - JAVA_VERSION=openjdk:11
       - TZ=${TZ}
     ports:
-      - 8002:8000
+      - 8001:8000
 
   cmdb1:
     networks:
@@ -104,18 +134,16 @@ services:
     platform: linux/amd64
     environment:
       - SPLUNK_START_ARGS=--accept-license
-      - SPLUNK_APPS_URL=${SPLUNK_HF_APPS}
       - SPLUNK_SEARCH_HEAD_URL=sh1
       - SPLUNK_INDEXER_URL=idx1
       - SPLUNK_HEAVY_FORWARDER_URL=hf1,hf2
+      - SPLUNK_DEPLOYMENT_SERVER=ds-hf
       - SPLUNK_ROLE=splunk_heavy_forwarder
-      - SPLUNKBASE_USERNAME
-      - SPLUNKBASE_PASSWORD
       - SPLUNK_PASSWORD
       - JAVA_VERSION=openjdk:11
       - TZ=${TZ}
     ports:
-      - 8003:8000
+      - 8002:8000
 
   cmdb2:
     networks:
@@ -136,14 +164,6 @@ services:
       - cmdb2-data:/var/lib/mysql
       - ${MY_SQL_DIR}:/docker-entrypoint-initdb.d
       - .${CSV_DIR}:${CSV_DIR}
-  adminer:
-    networks:
-      cmdb1:
-      cmdb2:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
 
 networks:
   splunknet:
