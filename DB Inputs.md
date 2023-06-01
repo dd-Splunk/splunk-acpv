@@ -4,9 +4,9 @@ Config file: db_inputs.conf
 
 ```
 [rising-assets]
-connection = splunkdb-db
+connection = splunkdb-cmdb1
 disabled = 0
-index = main
+index = assets
 index_time_mode = current
 interval = */1 * * * *
 mode = rising
@@ -17,5 +17,4 @@ sourcetype = acpv:asset
 tail_rising_column_init_ckpt_value = {"value":"0","columnType":3}
 tail_rising_column_name = id
 tail_rising_column_number = 1
-checkpoint_key = 644a5010d1a05e3c19799182
 ```
