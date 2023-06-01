@@ -13,7 +13,7 @@ services:
       - SPLUNK_SEARCH_HEAD_URL=sh1
       - SPLUNK_INDEXER_URL=idx1
       - SPLUNK_HEAVY_FORWARDER_URL=hf1,hf2
-      - SPLUNK_DEPLOYMENT_SERVER=ds-sh
+      # - SPLUNK_DEPLOYMENT_SERVER=ds-sh
       - SPLUNK_ROLE=splunk_search_head
       - SPLUNK_PASSWORD
       - TZ=${TZ}
@@ -35,12 +35,15 @@ services:
       - SPLUNK_SEARCH_HEAD_URL=sh1
       - SPLUNK_INDEXER_URL=idx1
       - SPLUNK_HEAVY_FORWARDER_URL=hf1,hf2
+      - SPLUNK_DEPLOYMENT_SERVER=ds-sh
       - SPLUNK_ROLE=splunk_indexer
       - SPLUNK_PASSWORD
       - TZ=${TZ}
     volumes:
       - idx1-var:/opt/splunk/var
       - idx1-etc:/opt/splunk/etc
+    ports:
+      - 8005:8000
     restart: always
 
   ds-sh:
