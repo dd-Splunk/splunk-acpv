@@ -51,10 +51,15 @@ repos:
         - --line-length=100
 
 - repo: https://github.com/myint/autoflake
-  rev: v2.1.0
+  rev: v2.1.1
   hooks:
     - id: autoflake
       args:
         - --in-place
         - --remove-unused-variables
         - --remove-all-unused-imports
+
+- repo: https://github.com/iamthefij/docker-pre-commit
+  rev: v3.0.1
+  hooks:
+    - id: docker-compose-check
