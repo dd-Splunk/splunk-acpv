@@ -10,7 +10,7 @@ services:
     platform: linux/amd64
     environment:
       - SPLUNK_START_ARGS=--accept-license
-      - SPLUNK_APPS_URL=https://splunkbase.splunk.com/app/2686/release/3.13.0/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download
+      - SPLUNK_APPS_URL=https://splunkbase.splunk.com/app/2686/release/3.13.0/download,https://splunkbase.splunk.com/app/6154/release/1.1.0/download,https://splunkbase.splunk.com/app/4353/release/1.7.15/download
       - SPLUNKBASE_USERNAME
       - SPLUNKBASE_PASSWORD
       - SPLUNK_PASSWORD
@@ -37,12 +37,8 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: yes
       TZ: ${TZ}
     volumes:
-      - cmdb1-data:/var/lib/mysql
       - ${MY_SQL_DIR}:/docker-entrypoint-initdb.d
       - .${CSV_DIR}:${CSV_DIR}
 
 networks:
   splunknet:
-
-volumes:
-  cmdb1-data:
