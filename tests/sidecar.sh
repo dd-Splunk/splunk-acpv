@@ -50,10 +50,11 @@ EOF
 dbx_input () {
   DB_TABLE="$1"
 
-  echo "Create DBX input ${DB_NAME}.${DB_TABLE} on ${SPLUNK_HOST}"
+  echo -e "\nCreate DBX input ${DB_NAME}.${DB_TABLE} on ${SPLUNK_HOST}"
   curl -k -s -X POST  -u admin:$SPLUNK_PASSWORD \
-    https://$SPLUNK_HOST:8089/servicesNS/nobody/splunk_app_db_connect/db_connect/dbxproxy/inputs \
-    -d "$(generate_input_data)"
+  https://$SPLUNK_HOST:8089/servicesNS/nobody/splunk_app_db_connect/db_connect/dbxproxy/inputs \
+  -d "$(generate_input_data)"
+  echo ""
 
 }
 
@@ -80,7 +81,7 @@ init_hf () {
     -d "$(generate_connection_data)"
     echo "MySQL Connection created on ${SPLUNK_HOST}"
 
-    for Table in assets
+    for Table in assets mobiles
     do
       dbx_input $Table
     done
