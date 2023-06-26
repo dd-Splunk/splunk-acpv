@@ -36,13 +36,13 @@ generate_input_data () {
   "index": "${DB_TABLE}",
   "mode": "rising",
   "connection": "${DB_NAME}-${DB_HOST}",
-  "rising_column_name": "id",
-  "rising_column_index": 1,
+  "tail_rising_column_name": "id",
+  "tail_rising_column_index": 1,
+  "rising_column_init_ckpt_value": {"value":"0","columnType":3},
   "timestamp_column_index": null,
   "timestamp_format": null,
   "timestampType": "current",
-  "sourcetype": "acpv:${DB_TABLE}",
-  "checkpoint": null
+  "sourcetype": "acpv:${DB_TABLE}"
 }
 EOF
 }
@@ -51,6 +51,7 @@ dbx_input () {
   DB_TABLE="$1"
 
   echo -e "\nCreate DBX input ${DB_NAME}.${DB_TABLE} on ${SPLUNK_HOST}"
+  echo -e "$(generate_input_data)"
   curl -k -s -X POST  -u admin:$SPLUNK_PASSWORD \
   https://$SPLUNK_HOST:8089/servicesNS/nobody/splunk_app_db_connect/db_connect/dbxproxy/inputs \
   -d "$(generate_input_data)"
